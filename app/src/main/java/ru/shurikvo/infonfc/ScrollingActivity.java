@@ -142,8 +142,8 @@ public class ScrollingActivity extends AppCompatActivity {
         StringBuilder sb = new StringBuilder();
         byte[] id = tag.getId();
         messageInfo += "\n---------- Tag Data:";
-        sb.append("UID (hex): ").append(toHex(id).toUpperCase()).append('\n');
-        sb.append("UID (reversed hex): ").append(toReversedHex(id).toUpperCase()).append('\n');
+        sb.append("UID (hex): ").append(toHex(id).toUpperCase().replace(" ","")).append('\n');
+        sb.append("UID (reversed hex): ").append(toReversedHex(id).toUpperCase().replace(" ","")).append('\n');
         sb.append("UID (dec): ").append(toDec(id)).append('\n');
         sb.append("UID (reversed dec): ").append(toReversedDec(id)).append('\n');
 
@@ -237,6 +237,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 sb.append('\n');
 
                 PSLister pli = new PSLister();
+                sb.append(pli.getCardInfo(IsoDep.get(tag)));
                 sb.append(pli.getPSList(IsoDep.get(tag)));
             }
         }
