@@ -56,13 +56,21 @@ public class ScrollingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String subject = "NFC Info "+android.text.format.DateFormat.format("yyMMddhhmmss", new java.util.Date()).toString();
+                String subject = "NFC Info "+android.text.format.DateFormat.format("yyMMddHHmmss", new java.util.Date()).toString();
                 Intent email = new Intent(Intent.ACTION_SEND);
                 email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "shurikvo@gmail.com" });
                 email.putExtra(Intent.EXTRA_SUBJECT, subject);
                 email.putExtra(Intent.EXTRA_TEXT, messageInfo);
                 email.setType("message/rfc822");
                 startActivity(Intent.createChooser(email, "Choose an Email client :"));
+            }
+        });
+
+        FloatingActionButton fin = (FloatingActionButton) findViewById(R.id.fin);
+        fin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage(R.string.about, R.string.about_text);
             }
         });
 
@@ -323,6 +331,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showMessage(R.string.app_name , R.string.action_settings);
             return true;
         }
         return super.onOptionsItemSelected(item);

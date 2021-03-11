@@ -8,6 +8,9 @@ public class CardTypeParser {
     public String parseCPLC(String sData) {
         String result = "Не распознан";
 
+        if(sData.length() < 50)
+            return result;
+
         for(int i = 0; i < typeList.size(); ++i) {
             CardTypeItem cit = typeList.get(i);
             String crit = sData.substring(cit.start,cit.start+cit.value.length());

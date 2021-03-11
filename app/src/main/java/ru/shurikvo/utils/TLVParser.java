@@ -63,17 +63,17 @@ public class TLVParser {
 				}
 //System.out.println("TagValueLength: "+nTagValueLength+" LenLen: "+LenLen);
 				tag.TagSize = nTagValueLength;
-				tag.TagLength = Arrays.copyOfRange(bRootTag,nOff,nOff+LenLen);
+				tag.TagLength = Arrays.copyOfRange(bRootTag, nOff, nOff + LenLen);
 				nOff += LenLen;
 //System.out.println(">-L "+byt.toHexString(tag.TagLength));
 				if (nTagValueLength > 0)
-					tag.TagValue = Arrays.copyOfRange(bRootTag,nOff,nOff+nTagValueLength);
+					tag.TagValue = Arrays.copyOfRange(bRootTag, nOff, nOff + nTagValueLength);
 				else
 					tag.TagValue = new byte[0];
 //System.out.println(">-V "+byt.toHexString(tag.TagValue));
 				TagList.add(tag);
 			}
-			if (isContainer) {
+			if (isContainer && tag.TagSize > 0) {
 				RC = parse(tag.TagValue, 0, tag.TagValue.length);
 				if (RC < 0)
 					return RC;

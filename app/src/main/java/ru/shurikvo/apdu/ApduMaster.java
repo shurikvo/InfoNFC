@@ -5,7 +5,7 @@ import java.io.IOException;
 import ru.shurikvo.utils.ByteMatter;
 
 public class ApduMaster {
-    public boolean isConnected = false;
+    public boolean isConnected = false, isError = false;
     public String SW = "", message = "";
 
     private IsoDep isoDepTag;
@@ -13,6 +13,7 @@ public class ApduMaster {
 
     public int connect(IsoDep iso) {
         int RC;
+        isError = false;
         StringBuilder sb = new StringBuilder();
         isoDepTag = iso;
 
@@ -31,6 +32,7 @@ public class ApduMaster {
         } catch(IOException e) {
             sb.append("Exception: ").append(e.getMessage()).append('\n');
             message = sb.toString();
+            isError = true;
             return -1;
         }
         message = sb.toString();
@@ -38,6 +40,7 @@ public class ApduMaster {
     }
 
     public void close() {
+        isError = false;
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -46,6 +49,7 @@ public class ApduMaster {
             sb.append("Карта отключена").append('\n');
         } catch(IOException e) {
             sb.append("Exception: ").append(e.getMessage()).append('\n');
+            isError = true;
         }
         message = sb.toString();
     }
@@ -53,6 +57,7 @@ public class ApduMaster {
     public String sendApdu(String sCmd) {
         byte[] bAPDU, result;
         String sResp = "";
+        isError = false;
         StringBuilder sb = new StringBuilder();
         SW = "";
 
@@ -68,6 +73,7 @@ public class ApduMaster {
             sb.append("<< ").append(sResp).append(" ").append(SW).append('\n');
         } catch(IOException e) {
             sb.append("Exception: ").append(e.getMessage()).append('\n');
+            isError = true;
         }
 
         message = sb.toString();

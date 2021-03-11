@@ -5,4 +5,12 @@
     <string name="error">Ошибка</string>
     <string name="no_nfc">В устройстве отсутствует NFC</string>
     <string name="nfc_disabled">NFC отключен. Для подключения NFC перейдите в сетевые настройки</string>
+    <string name="about">О программе</string>
+    <string name="about_text">
+        "Бла-бла-бла...\n"
+        "Бла-бла-бла...\n"
+        "Бла-бла-бла...\n"
+        "Бла-бла-бла...\n"
+        "Бла-бла-бла...\n"
+    </string>
 </resources>
