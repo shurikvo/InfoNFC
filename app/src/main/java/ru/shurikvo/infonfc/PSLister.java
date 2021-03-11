@@ -117,6 +117,7 @@ public class PSLister {
     }
 
     private String getAppInfo(String aid, String name) {
+        boolean isPersoned = false;
         int RC;
         String sCmd, sResp, sB = "";
         StringBuilder sb = new StringBuilder();
@@ -131,8 +132,21 @@ public class PSLister {
         if(!apdu.SW.equals("9000"))
             return sb.toString();
 
+        sB = sResp;
+        sResp = apdu.sendApdu("80500000082021222324252627");
+        sb.append(apdu.message);
+        if(apdu.isError) {
+            this.isError = apdu.isError;
+            return sb.toString();
+        }
+        if(apdu.SW.equals("9000"))
+            isPersoned = false;
+        else
+            isPersoned = true;
+
+
         sb.append("Найдено приложение: ").append(name);
-        if(sResp.length() < 10) {
+        if(!isPersoned) {
             sb.append(" - не персонализировано").append('\n');
             return sb.toString();
         } else {
@@ -140,6 +154,7 @@ public class PSLister {
         }
         sb.append('\n');
 
+        sResp = sB;
         TLVParser tlv = new TLVParser();
         byte[] bData = byt.toByteArray(sResp);
         RC = tlv.parse(bData,0,bData.length);
@@ -279,7 +294,7 @@ public class PSLister {
                     sPAN = byt.toHexString(sit.TagValue);
                 }
                 if(sB.equals("5F20")) {
-                    sHolderName = byt.toHexString(sit.TagValue);
+                    sHolderName = new String(sit.TagValue, StandardCharsets.US_ASCII);
                     String[] sP = sHolderName.split("/");
                     sHolderName = "";
                     if(sP != null) {
