@@ -201,6 +201,26 @@ public class ScrollingActivity extends AppCompatActivity {
 
                     sb.append("Mifare blocks: ");
                     sb.append(mifareTag.getBlockCount());
+
+                    int nBlk = 0;
+                    byte[] bKey = {(byte)0xFF,(byte)0xFF,(byte)0xFF,(byte)0xFF,(byte)0xFF,(byte)0xFF};
+                    mifareTag.connect();
+                    for(int nSec = 0; nSec < 40; ++nSec) {
+                        if (mifareTag.authenticateSectorWithKeyA(nSec,bKey)) {
+                            sb.append("Sector ").append(nSec).append(": Auth OK").append('\n');
+                            int nB = mifareTag.getBlockCountInSector(nSec);
+                            for(int i = 0; i < nB; ++i) {
+                                byte[] bData = mifareTag.readBlock(nBlk);
+                                sb.append(byt.toHexString(bData)).append('\n');
+                                nBlk++;
+                            }
+                        } else {
+                            sb.append("Sector ").append(nSec).append(": Auth Error").append('\n');
+                        }
+                    }
+                    mifareTag.close();
+
+
                 } catch (Exception e) {
                     sb.append("Mifare classic error: " + e.getMessage());
                 }
