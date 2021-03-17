@@ -34,13 +34,14 @@ import ru.shurikvo.utils.ByteMatter;
 
 public class ScrollingActivity extends AppCompatActivity {
 
-    private NfcAdapter nfcAdapter;
-    private PendingIntent pendingIntent;
     private final static String TAG = "nfc_test";
+    private static final String KEY_LOG = "LOG";
 
     private String messageInfo;
     private ByteMatter byt = new ByteMatter();
 
+    private NfcAdapter nfcAdapter;
+    private PendingIntent pendingIntent;
     private AlertDialog mDialog;
 
     @Override
@@ -84,8 +85,20 @@ public class ScrollingActivity extends AppCompatActivity {
         }
         pendingIntent = PendingIntent.getActivity(this,0,
                 new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
+
+        if (savedInstanceState != null) {
+            messageInfo = savedInstanceState.getString(KEY_LOG, "");
+            showInfo();
+        }
     }
-    //----------------------------------------------------------------------------------------------
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(KEY_LOG, messageInfo);
+    }
+
     @Override
     protected void onResume() {
 
